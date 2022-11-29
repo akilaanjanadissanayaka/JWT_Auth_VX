@@ -1,5 +1,10 @@
 package com.youtube.jwt.service;
 
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import com.youtube.jwt.dao.ProductRepository;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.exception.ProductNotFoundException;
@@ -8,10 +13,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.io.FileNotFoundException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -44,8 +48,29 @@ public class ProductService {
         return productRepository.save(depDB);
     }
 
-    public List<Product> getProduct() {
-        return (List<Product>) productRepository.findAll();
+    public void GenPDF(List<Product> products) throws FileNotFoundException {
+        String path="testPdf.pdf";
+        String text="Helooooooooooo new text";
+
+        String result = products.stream()
+                .map(n -> {
+                    return String.valueOf(n.getName()) +" - "+String.valueOf(n.getQty());
+                })
+                .collect(Collectors.joining("\n"));
+//        System.out.println(result);
+        Paragraph paragraph=new Paragraph(result);
+        PdfWriter pdfWriter= new PdfWriter(path);
+        PdfDocument pdfDocument=new PdfDocument(pdfWriter);
+        pdfDocument.addNewPage();
+        Document document=new Document(pdfDocument);
+        document.add(paragraph);
+        document.close();
+
+    }
+    public List<Product> getProduct() throws FileNotFoundException {
+        List<Product> products=new ArrayList<Product>(productRepository.findAll());
+        GenPDF(products);
+        return products;
     }
 
 
@@ -68,7 +93,6 @@ public class ProductService {
 
 
     public Product addProduct(Product product) {
-        sendSimpleEmail("akiladissanayaka255@gmail.com","Test subject",product.getName());
         return productRepository.save(product);
     }
 

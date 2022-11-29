@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -17,18 +19,18 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getall")
-    public List<Product> getProduct(){
+    public List<Product> getProduct() throws FileNotFoundException {
         System.out.println("Get all");
         return productService.getProduct();
     }
 
     @PostMapping("/AddProduct")
-    public Product addProduct(@RequestBody Product product){
+    public Product addProduct(@RequestBody @Valid Product product){
         return productService.addProduct(product);
     }
 
     @DeleteMapping("deleteProduct/{id}")
-    public String deleteTutorial(@PathVariable("id") int id ) {
+    public String deleteTutorial(@PathVariable("id") @Valid int id ) {
         productService.deleteProduct(id);
         return "Product successfully deleted";
     }
