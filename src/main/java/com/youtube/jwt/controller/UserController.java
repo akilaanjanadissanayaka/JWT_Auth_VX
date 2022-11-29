@@ -4,6 +4,8 @@ import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.entity.User;
 import com.youtube.jwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +25,29 @@ public class UserController {
     public void initRoleAndUser() {
         userService.initRoleAndUser();
     }
+    @Autowired
+    private JavaMailSender javaMailSender;
 
+    public void sendSimpleEmail(String toEmail,
+                                String subject,
+                                String body
+    ) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("akiladissanayaka255@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+        javaMailSender.send(message);
+        System.out.println("Mail Send...");
+
+
+    }
     @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user) {
+        sendSimpleEmail(user.getUsermail(),"Test subject","Successfully registerd");
+
         return userService.registerNewUser(user);
+
     }
 
     @GetMapping({"/forAdmin"})

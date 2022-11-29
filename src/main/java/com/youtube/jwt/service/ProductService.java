@@ -19,23 +19,23 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-//    @Autowired
-//    private JavaMailSender mailSender;
-//
-//    public void sendSimpleEmail(String toEmail,
-//                                String subject,
-//                                String body
-//    ) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("akiladissanayaka255@gmail.com");
-//        message.setTo(toEmail);
-//        message.setText(body);
-//        message.setSubject(subject);
-//        mailSender.send(message);
-//        System.out.println("Mail Send...");
-//
-//
-//    }
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    public void sendSimpleEmail(String toEmail,
+                                String subject,
+                                String body
+    ) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("akiladissanayaka255@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+        javaMailSender.send(message);
+        System.out.println("Mail Send...");
+
+
+    }
 
     public Product updateProductqty(int productId, int qty) {
         Product depDB = productRepository.findById(productId).get();
@@ -68,7 +68,7 @@ public class ProductService {
 
 
     public Product addProduct(Product product) {
-//        sendSimpleEmail("akiladissanayaka255@gmail.com","Test subject",product.getName());
+        sendSimpleEmail("akiladissanayaka255@gmail.com","Test subject",product.getName());
         return productRepository.save(product);
     }
 

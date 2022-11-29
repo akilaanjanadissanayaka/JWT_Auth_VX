@@ -1,8 +1,13 @@
 package com.youtube.jwt.entity;
 
-import com.sun.istack.NotNull;
+
+
+
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "product")
@@ -12,17 +17,17 @@ public class Product {
     private int id;
 
     @Column(name = "name")
-//    @NotNull(message = "Name is mandatory")
-//    @NotBlank(message = "Name is mandatory")
+    @NotNull(message = "Name is mandatory")
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Column(name = "Category")
-//    @NotNull(message = "Category is mandatory")
-//    @NotBlank(message = "Category is mandatory")
+    @NotNull(message = "Category is mandatory")
+    @NotBlank(message = "Category is mandatory")
     private String Category;
 
     @Column(name = "qty")
-//    @Min(value = 0, message = "Value must be positive")
+    @Min(value = 0, message = "Value must be positive")
     private int qty;
 
     public Product() {

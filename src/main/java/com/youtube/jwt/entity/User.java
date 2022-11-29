@@ -11,6 +11,16 @@ public class User {
     private String userFirstName;
     private String userLastName;
     private String userPassword;
+    private String usermail;
+
+    public String getUsermail() {
+        return usermail;
+    }
+
+    public void setUsermail(String usermail) {
+        this.usermail = usermail;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
             joinColumns = {
