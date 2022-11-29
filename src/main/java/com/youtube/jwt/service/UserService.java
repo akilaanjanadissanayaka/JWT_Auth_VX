@@ -1,7 +1,9 @@
 package com.youtube.jwt.service;
 
+import com.youtube.jwt.dao.ProductRepository;
 import com.youtube.jwt.dao.RoleDao;
 import com.youtube.jwt.dao.UserDao;
+import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.entity.Role;
 import com.youtube.jwt.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserService {
 
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private UserDao userDao;
 
@@ -23,6 +28,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    public List<Product> getProduct() {
+        return (List<Product>) productRepository.findAll();
+    }
     public void initRoleAndUser() {
 
         Role adminRole = new Role();
