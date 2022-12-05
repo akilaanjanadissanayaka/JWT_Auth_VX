@@ -5,6 +5,7 @@ import com.youtube.jwt.exception.ProductNotFoundException;
 import com.youtube.jwt.service.ProductService;
 import com.youtube.jwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +20,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getall")
-    public List<Product> getProduct() throws FileNotFoundException {
+    public ResponseEntity<List<Product>> getProduct() throws FileNotFoundException {
         System.out.println("Get all");
         return productService.getProduct();
     }

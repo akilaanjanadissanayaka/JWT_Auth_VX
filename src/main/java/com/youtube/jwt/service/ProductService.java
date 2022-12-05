@@ -8,9 +8,11 @@ import com.itextpdf.layout.element.Paragraph;
 import com.youtube.jwt.dao.ProductRepository;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.exception.ProductNotFoundException;
+import com.youtube.jwt.payload.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,6 +33,7 @@ public class ProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
+    private static final String UNAUTHORISED_MESSAGE = "Authentication failed";
 
 
 
@@ -97,18 +100,23 @@ public class ProductService {
         }
 
     }
-    public List<Product> getProduct() throws FileNotFoundException {
+    public ResponseEntity getProduct() throws FileNotFoundException {
 
         try{
             LOGGER.info("Successfully get product");
             List<Product> products=new ArrayList<Product>(productRepository.findAll());
+
             GenPDF(products);
-            return products;
+            return new ResponseEntity<List<Product>>(productRepository.findAll(), HttpStatus.OK);
+//            return products;
         }
         catch (Exception e){
             LOGGER.error(">>> Unable to get product");
             LOGGER.error("Context", e);
-            return null;
+//            return null;
+            return ResponseEntity.ok(new ApiResponse(false, UNAUTHORISED_MESSAGE));
+
+
         }
 
     }
