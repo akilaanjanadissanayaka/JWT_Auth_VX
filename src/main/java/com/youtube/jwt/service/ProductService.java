@@ -12,17 +12,20 @@ import com.youtube.jwt.payload.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ProductService {
 
     @Autowired
@@ -30,7 +33,8 @@ public class ProductService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-
+    @Autowired
+    private ProductRepository repo;
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     private static final String UNAUTHORISED_MESSAGE = "Authentication failed";
@@ -191,5 +195,10 @@ public class ProductService {
             return null;
         }
     }
+
+    public List<Product> listAll() {
+        return repo.findAll(Sort.by("name").ascending());
+    }
+
 
 }
