@@ -27,7 +27,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getall")
-    @PreAuthorize("hasRole('Admin')")
+//    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<Product>> getProduct() throws FileNotFoundException {
         System.out.println("Get all");
         return productService.getProduct();
