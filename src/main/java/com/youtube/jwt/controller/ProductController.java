@@ -5,6 +5,7 @@ import com.youtube.jwt.exception.ProductNotFoundException;
 import com.youtube.jwt.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
@@ -26,6 +27,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getall")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<Product>> getProduct() throws FileNotFoundException {
         System.out.println("Get all");
         return productService.getProduct();
